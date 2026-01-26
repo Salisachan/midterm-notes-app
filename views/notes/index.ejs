@@ -1,0 +1,24 @@
+<%- include('../partials/header', { title: 'My Notes' }) %>
+
+    <h1 class="mb-4">My Notes</h1>
+
+    <a href="/notes/new" class="btn btn-primary mb-3">+ New Note</a>
+
+    <% if (notes.length===0) { %>
+        <p class="text-muted">No notes yet.</p>
+        <% } else { %>
+            <ul class="list-group">
+                <% for (let note of notes) { %>
+                    <li class="list-group-item">
+                        <h5 class="mb-1">
+                            <%= note.title %>
+                        </h5>
+                        <p class="mb-0">
+                            <%= note.content %>
+                        </p>
+                    </li>
+                    <% } %>
+            </ul>
+            <% } %>
+
+                <%- include('../partials/footer') %>
