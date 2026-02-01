@@ -1,0 +1,46 @@
+<%- include('../partials/header', { title: 'View Note' }) %>
+
+    <% if (error) { %>
+        <div class="alert alert-danger">
+            <%= error %>
+        </div>
+        <a href="/notes" class="btn btn-outline-secondary">Back to all notes</a>
+        <% } else { %>
+
+            <div class="note-wrapper">
+
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h1 class="mb-1">
+                            <%= note.title %>
+                        </h1>
+                        <p class="text-muted mb-0">
+                            Created: <%= note.createdAt.toLocaleString() %>
+                                <% if (note.updatedAt) { %>
+                                    • Updated: <%= note.updatedAt.toLocaleString() %>
+                                        <% } %>
+                        </p>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="/notes/<%= note._id %>/edit" class="btn btn-primary">Edit</a>
+                        <form action="/notes/<%= note._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="border rounded p-3 note-content">
+                    <%= note.content %>
+                </div>
+
+
+                <div class="mt-4">
+                    <a href="/notes" class="btn btn-outline-secondary">Back to all notes</a>
+                </div>
+
+            </div>
+
+            <% } %>
+
+                <%- include('../partials/footer') %>

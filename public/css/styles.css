@@ -1,0 +1,6 @@
+/* Force note content to be left-aligned */
+.note-content {
+    white-space: pre-line;
+    line-height: 1.6;
+    text-align: left;
+}

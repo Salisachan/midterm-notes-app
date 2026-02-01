@@ -1,14 +1,24 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import notesRouter from './routes/notes.js';
+import methodOverride from 'method-override';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.set('view engine', 'ejs');
+
+// Static files (this is correct)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // replaces body-parser
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 
 // Routes
 app.use('/notes', notesRouter);
@@ -22,7 +32,7 @@ mongoose.connect('mongodb://localhost:27017/notesApp')
         console.error('Failed to connect to MongoDB', err);
     });
 
-// Start server
+// Start server (unchanged)
 async function startServer() {
     const PORT = 3000;
     app.listen(PORT, () => {
@@ -31,3 +41,5 @@ async function startServer() {
 }
 
 startServer();
+
+
