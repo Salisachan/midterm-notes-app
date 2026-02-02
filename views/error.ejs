@@ -1,0 +1,11 @@
+<%- include('./partials/header', { title: 'Error' }) %>
+
+    <h1 class="mb-3">Error</h1>
+
+    <div class="alert alert-danger">
+        <%= message %>
+    </div>
+
+    <a href="/notes" class="btn btn-outline-secondary">Back to all notes</a>
+
+    <%- include('./partials/footer') %>

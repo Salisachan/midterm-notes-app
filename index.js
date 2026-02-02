@@ -5,6 +5,8 @@ import methodOverride from 'method-override';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import AppError from './utils/AppError.js';
+
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,6 +24,18 @@ app.use(methodOverride('_method'));
 
 // Routes
 app.use('/notes', notesRouter);
+
+// 404 handler for unknown routes 
+app.use((req, res, next) => {
+    next(new AppError('Page not found.', 404));
+});
+
+// Centralized error handler
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Something went wrong.';
+    res.status(statusCode).render('error', { message });
+});
 
 // DB connect
 mongoose.connect('mongodb://localhost:27017/notesApp')
