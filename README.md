@@ -87,3 +87,66 @@ Open your browser at:
 ```bash
 http://localhost:3000
 ```
+
+## Authentication Flow
+
+- Users can register and log in using a username and password
+- Passwords are securely hashed using bcrypt with salt
+- A session stores the logged-in user’s ID
+- Unauthenticated users are redirected to the login page
+- Each user can only view, create, edit, and delete their own notes
+- Logging out destroys the session and returns the user to the login page
+
+---
+
+## Notes Routes (RESTful)
+
+| Method | Route | Description |
+|------|------|------------|
+| GET | /notes | View all notes for the logged-in user |
+| GET | /notes/new | Display the form to create a new note |
+| POST | /notes | Create a new note |
+| GET | /notes/:id | View a single note |
+| GET | /notes/:id/edit | Display the edit note form |
+| PUT | /notes/:id | Update an existing note |
+| DELETE | /notes/:id | Delete a note |
+
+---
+
+## Error Handling
+
+- Server-side validation errors are displayed clearly on the page
+- Invalid note IDs and missing resources show appropriate error messages
+- Unknown routes return a 404 error page
+- Application errors are handled using centralized error handling in Express
+
+---
+
+## What I Learned
+
+- How to implement session-based authentication in Express
+- How to securely hash and salt passwords using bcrypt
+- How to structure an Express application using routers and middleware
+- How to work with MongoDB and Mongoose models
+- How to enforce per-user access to data
+- How to handle errors cleanly in Express 5
+- How to build a full CRUD application using EJS templates
+
+---
+
+## Future Improvements
+
+- Search notes by title or content
+- Show notes in smaller groups instead of loading all notes at once
+- OAuth authentication (Google login)
+- Password reset functionality
+- Additional UI/UX enhancements
+
+---
+
+## Author
+
+Salisa Chanchokpong  
+UBC Software Development Bootcamp
+
+
