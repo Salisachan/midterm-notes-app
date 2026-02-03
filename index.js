@@ -4,7 +4,8 @@ import notesRouter from './routes/notes.js';
 import methodOverride from 'method-override';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+import session from 'express-session';
+import authRouter from './routes/auth.js';
 import AppError from './utils/AppError.js';
 
 const app = express();
@@ -22,8 +23,36 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+app.use(session({
+    secret: 'change-this-to-a-long-random-string',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use((req, res, next) => {
+    res.locals.currentUserId = req.session.userId;
+    next();
+});
+
+app.get('/', (req, res) => {
+    if (req.session.userId) {
+        return res.redirect('/notes');
+    }
+    res.redirect('/login');
+});
+
 // Routes
-app.use('/notes', notesRouter);
+app.use('/', authRouter);
+
+function requireLogin(req, res, next) {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    next();
+}
+
+app.use('/notes', requireLogin, notesRouter);
+
 
 // 404 handler for unknown routes 
 app.use((req, res, next) => {

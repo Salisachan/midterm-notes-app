@@ -5,9 +5,9 @@ import AppError from '../utils/AppError.js';
 
 const router = express.Router();
 
-// Show all notes
+// Show all notes (only this user's notes)
 router.get('/', async (req, res) => {
-    const notes = await Note.find().sort({ createdAt: -1 });
+    const notes = await Note.find({ userId: req.session.userId }).sort({ createdAt: -1 });
     res.render('notes/index', { notes });
 });
 
@@ -16,7 +16,7 @@ router.get('/new', (req, res) => {
     res.render('notes/new', { form: { title: '', content: '' } });
 });
 
-// Create a new note
+// Create a new note (save userId)
 router.post('/', async (req, res) => {
     const { title, content } = req.body;
 
@@ -29,13 +29,14 @@ router.post('/', async (req, res) => {
 
     await Note.create({
         title: title.trim(),
-        content: content.trim()
+        content: content.trim(),
+        userId: req.session.userId
     });
 
     res.redirect('/notes');
 });
 
-// Show edit form
+// Show edit form (only if note belongs to user)
 router.get('/:id/edit', async (req, res) => {
     const { id } = req.params;
 
@@ -43,7 +44,7 @@ router.get('/:id/edit', async (req, res) => {
         throw new AppError('Invalid note ID.', 400);
     }
 
-    const note = await Note.findById(id);
+    const note = await Note.findOne({ _id: id, userId: req.session.userId });
     if (!note) {
         throw new AppError('Note not found.', 404);
     }
@@ -51,7 +52,7 @@ router.get('/:id/edit', async (req, res) => {
     res.render('notes/edit', { note });
 });
 
-// Update note
+// Update note (only if note belongs to user)
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { title, content } = req.body;
@@ -61,7 +62,7 @@ router.put('/:id', async (req, res) => {
     }
 
     if (!title?.trim() || !content?.trim()) {
-        const note = await Note.findById(id);
+        const note = await Note.findOne({ _id: id, userId: req.session.userId });
         if (!note) {
             throw new AppError('Note not found.', 404);
         }
@@ -72,8 +73,8 @@ router.put('/:id', async (req, res) => {
         });
     }
 
-    const updated = await Note.findByIdAndUpdate(
-        id,
+    const updated = await Note.findOneAndUpdate(
+        { _id: id, userId: req.session.userId },
         { title: title.trim(), content: content.trim() },
         { runValidators: true, new: true }
     );
@@ -85,7 +86,7 @@ router.put('/:id', async (req, res) => {
     res.redirect('/notes');
 });
 
-// Delete note
+// Delete note (only if note belongs to user)
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -93,7 +94,7 @@ router.delete('/:id', async (req, res) => {
         throw new AppError('Invalid note ID.', 400);
     }
 
-    const deleted = await Note.findByIdAndDelete(id);
+    const deleted = await Note.findOneAndDelete({ _id: id, userId: req.session.userId });
     if (!deleted) {
         throw new AppError('Note not found.', 404);
     }
@@ -101,7 +102,7 @@ router.delete('/:id', async (req, res) => {
     res.redirect('/notes');
 });
 
-// Show one note
+// Show one note (only if note belongs to user) - keep last
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
@@ -109,7 +110,7 @@ router.get('/:id', async (req, res) => {
         throw new AppError('Invalid note ID.', 400);
     }
 
-    const note = await Note.findById(id);
+    const note = await Note.findOne({ _id: id, userId: req.session.userId });
     if (!note) {
         throw new AppError('Note not found.', 404);
     }

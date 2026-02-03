@@ -13,3 +13,10 @@
 
 <body>
     <div class="container py-4">
+        <% if (currentUserId) { %>
+            <form action="/logout" method="POST" class="mb-3 text-end">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">
+                    Logout
+                </button>
+            </form>
+            <% } %>

@@ -1,0 +1,26 @@
+<%- include('../partials/header', { title: 'Login' }) %>
+
+    <h1 class="mb-4">Login</h1>
+
+    <% if (error) { %>
+        <div class="alert alert-danger">
+            <%= error %>
+        </div>
+        <% } %>
+
+            <form action="/login" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" value="<%= form?.username || '' %>">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+                <a href="/register" class="btn btn-outline-secondary ms-2">Register</a>
+            </form>
+
+            <%- include('../partials/footer') %>
