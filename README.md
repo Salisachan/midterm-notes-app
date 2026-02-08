@@ -44,8 +44,8 @@ midterm/
 │   ├── note.js
 │   └── user.js
 ├── routes/
-│   ├── notes.js
-│   └── auth.js
+│   ├── auth.js
+│   └── notes.js
 ├── utils/
 │   └── AppError.js
 ├── views/
