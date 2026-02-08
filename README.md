@@ -155,6 +155,7 @@ Through this project, I gained confidence building a complete full-stack app usi
 ## Author
 
 Salisa Chanchokpong  
-UBC Software Development Bootcamp
+
+
 
 
