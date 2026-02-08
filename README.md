@@ -143,7 +143,15 @@ http://localhost:3000
 - Additional UI/UX enhancements
 
 ---
+## Reflection
 
+The most challenging part of this project was implementing authentication and ensuring each user could only access their own notes. I learned how session-based authentication works and how to securely store passwords using bcrypt.
+
+Another challenge was error handling and validation. I learned that small issues like invalid IDs, missing form data, or route order can easily break an app if not handled carefully. Adding consistent validation and centralized error handling made the app more reliable and easier to debug.
+
+Through this project, I gained confidence building a complete full-stack app using Express, MongoDB/Mongoose, and EJS. If I had more time, I would improve the user experience further and add features like searching notes and displaying notes in smaller groups when the list becomes long.
+
+---
 ## Author
 
 Salisa Chanchokpong  
